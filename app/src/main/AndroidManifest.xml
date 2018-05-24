@@ -23,7 +23,28 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".SmsServiceCommunicator" />
+        <receiver android:name="com.ru.azabytin.locationtracker.SmsReceiver" android:enabled="true">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.ru.azabytin.locationtracker.SensorRestarterBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="com.ru.azabytin.locationtracker.RestartSensor"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.ru.azabytin.locationtracker.SensorService"
+            android:enabled="true" android:stopWithTask="false" >
+        </service>
+        <service android:name=".SmsServiceCommunicator" android:enabled="true" />
+
     </application>
 
 </manifest>
