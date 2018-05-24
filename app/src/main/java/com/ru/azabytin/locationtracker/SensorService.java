@@ -32,8 +32,6 @@ public class SensorService extends Service {
         Notification notification = builder.build();
 
         startForeground(777, notification);
-        //Intent hideIntent = new Intent(this, HideNotificationService.class);
-        //startService(hideIntent);
     }
 
     public SensorService() {
@@ -50,12 +48,11 @@ public class SensorService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         Log.e("SensorService", "onTaskRemoved!");
+        super.onTaskRemoved(rootIntent);
+        stopSelf();
+
         Intent broadcastIntent = new Intent("com.ru.azabytin.locationtracker.RestartSensor");
         sendBroadcast(broadcastIntent);
-
-        super.onTaskRemoved(rootIntent);
-        // Destroy the service
-        stopSelf();
     }
 
 
@@ -66,7 +63,6 @@ public class SensorService extends Service {
         Intent broadcastIntent = new Intent("com.ru.azabytin.locationtracker.RestartSensor");
         sendBroadcast(broadcastIntent);
 
-        stoptimertask();
     }
 
     private Timer timer;
@@ -92,17 +88,6 @@ public class SensorService extends Service {
                 Log.i("SensorService", "in timer ++++  "+ (counter++));
             }
         };
-    }
-
-    /**
-     * not needed
-     */
-    public void stoptimertask() {
-        //stop the timer, if it's not already null
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
     }
 
     @Nullable
